@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Task6 {
@@ -33,9 +34,20 @@ public class Task6 {
         //прокликивает последовательно все пункты меню слева, включая вложенные пункты
 
         List<WebElement> elements = driver.findElements(By.cssSelector("#box-apps-menu-wrapper a"));
-        for (int i = 0; i < elements.size(); i++) {
-            driver.findElements(By.cssSelector("#box-apps-menu-wrapper a")).get(i).click();
+
+        List<String> elementNames = getElementNames(elements);
+
+        for (String s : elementNames) {
+            driver.findElement(By.xpath("//span[text()='" + s + "']")).click();
             isTitlePresent(driver);
+
+            List<WebElement> menuSubItems = driver.findElements(By.cssSelector(("[id^=doc-]")));
+            List<String> leftSubMenuItemNames = getElementNames(menuSubItems);
+
+            for (String se : leftSubMenuItemNames) {
+                driver.findElement(By.xpath("//span[text()='" + se + "']")).click();
+                isTitlePresent(driver);
+            }
         }
     }
 
@@ -47,6 +59,15 @@ public class Task6 {
         } catch (NoSuchElementException ex) {
             return false;
         }
+    }
+
+    private List<String> getElementNames(List<WebElement> elements) {
+        List<String> names = new ArrayList<String>();
+        for (WebElement e : elements) {
+            names.add(e.getText());
+        }
+
+        return names;
     }
 
     @After
