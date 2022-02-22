@@ -45,7 +45,7 @@ public class Task88 {
         initTable();
 
         //а) проверяет, что страны расположены в алфавитном порядке
-        for (int i = 0; i < rows.size() - 1; i++) {
+        for (int i = 2; i < rows.size() - 2; i++) {
             currentCountryName = rows.get(i).findElements(By.tagName("td")).get(countryColNum).getText();
             nextCountryName = rows.get(i + 1).findElements(By.tagName("td")).get(countryColNum).getText();
             Assert.assertTrue(StringUtils.stripAccents(nextCountryName).compareTo(StringUtils.stripAccents(currentCountryName)) > 0);
