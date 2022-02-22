@@ -1,6 +1,7 @@
 package ru.selenium.course;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -27,10 +28,9 @@ public class Task7 {
         driver.get("http://localhost/litecart/en/");
         //найти все товары
         //проверить, что у всех товаров есть ровно 1 стикер
-        List<WebElement> elements = driver.findElements(By.xpath("//div[@class='image-wrapper']"));
-        for (int i = 0; i < elements.size(); i++) {
-            driver.findElements(By.xpath("//div[@class='image-wrapper']")).get(i).
-                    findElement(By.xpath("//div[contains(@class,'sticker new') or contains(@class,'sticker sale')]"));
+        List<WebElement> elements = driver.findElements(By.className("image-wrapper"));
+        for (WebElement e : elements) {
+            Assert.assertEquals(e.findElements(By.className("sticker")).size(), 1);
         }
     }
 
