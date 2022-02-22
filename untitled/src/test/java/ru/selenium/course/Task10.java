@@ -1,5 +1,6 @@
 package ru.selenium.course;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,22 +15,25 @@ public class Task10 {
     private WebDriverWait wait;
     ProductItem productMP;
     ProductItem productPP;
+
     @Before
     public void start() {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 10);
     }
 
-    public void loginAdmin(){
-        //входит в панель администратора http://localhost/litecart/admin
-        driver.get("http://localhost/litecart/admin/");
-        driver.findElement(By.name("username")).sendKeys("admin");
-        driver.findElement(By.name("password")).sendKeys("admin");
-        driver.findElement(By.name("login")).click();
+    @After
+    public void stop() {
+        driver.quit();
+        driver = null;
+    }
+
+    public void loginAdmin() {
         driver.get("http://localhost/litecart/en/");
     }
 
-    public void initTestData(){
+    public void initTestData() {
+        loginAdmin();
         productMP = new ProductItem(driver, By.id("box-campaigns"));
         driver.findElement(By.cssSelector("[title='Yellow Duck']")).click();
         productPP = new ProductItem(driver);
@@ -37,109 +41,49 @@ public class Task10 {
 
     //на главной странице и на странице товара совпадает текст названия товара
     @Test()
-    public void testProductNamesAreSame() {
+    public void checkProductPageAndMainPage() {
         loginAdmin();
         initTestData();
         Assert.assertTrue(productMP.name.equals(productPP.name));
-    }
 
-    //на главной странице и на странице товара совпадаeт обычная цена
-    @Test()
-    public void testRegularPricesAreSame() {
-        loginAdmin();
-        initTestData();
+        //на главной странице и на странице товара совпадаeт обычная цена
         Assert.assertTrue(productMP.regularPrice == productPP.regularPrice);
-    }
 
-    //на главной странице и на странице товара совпадаeт акционная цена
-    @Test()
-    public void testSpecialPricesAreSame() {
-        loginAdmin();
-        initTestData();
+        //на главной странице и на странице товара совпадаeт акционная цена
         Assert.assertTrue(productMP.specialPrice == productPP.specialPrice);
-    }
 
-    //обычная цена зачёркнутая (главная страница)
-    @Test()
-    public void testRegularPriceIsLignedThroughMP() {
-        loginAdmin();
-        initTestData();
+        //обычная цена зачёркнутая (главная страница)
         Assert.assertTrue(productMP.regularPriceTextDecoration.contains("line-through"));
-    }
 
-    //обычная цена серая (главная страница)
-    @Test()
-    public void testRegularPriceIsGrayMP() {
-        loginAdmin();
-        initTestData();
+        //обычная цена серая (главная страница)
         Assert.assertTrue(productMP.regularPriceColor.getBlue() == productMP.regularPriceColor.getGreen() &&
                 productMP.regularPriceColor.getGreen() == productMP.regularPriceColor.getRed());
-    }
 
-    //акционная цена жирная (главная страница)
-    @Test()
-    public void testSpecialPriceIsStrongMP() {
-        loginAdmin();
-        initTestData();
+        //акционная цена жирная (главная страница)
         Assert.assertTrue(productMP.specialPriceTextDecoration.contains("strong"));
-    }
 
-    //акционная цена красная (главная страница)
-    @Test()
-    public void testSpecialrPriceIsRedMP() {
-        loginAdmin();
-        initTestData();
+        //акционная цена красная (главная страница)
         Assert.assertTrue(productMP.specialPriceColor.getBlue() == 0 &&
                 productMP.specialPriceColor.getGreen() == 0);
-    }
 
-    //акционная цена крупнее, чем обычная (главная страница)
-    @Test()
-    public void testSpecialPriceFontGreaterThanRegularMP() {
-        loginAdmin();
-        initTestData();
+        //акционная цена крупнее, чем обычная (главная страница)
         Assert.assertTrue(productMP.specialPriceFontSize > productMP.regularPriceFontSize);
-    }
 
-    //обычная цена зачёркнутая (акционная страница)
-    @Test()
-    public void testRegularPriceIsLignedThroughPP() {
-        loginAdmin();
-        initTestData();
+        //обычная цена зачёркнутая (акционная страница)
         Assert.assertTrue(productMP.regularPriceTextDecoration.contains("line-through"));
-    }
 
-    //обычная цена серая (акционная страница)
-    @Test()
-    public void testRegularPriceIsGrayPP() {
-        loginAdmin();
-        initTestData();
+        //обычная цена серая (акционная страница)
         Assert.assertTrue(productMP.regularPriceColor.getBlue() == productMP.regularPriceColor.getGreen() &&
                 productMP.regularPriceColor.getGreen() == productMP.regularPriceColor.getRed());
-    }
 
-    //акционная цена жирная (акционная страница)
-    @Test()
-    public void testSpecialPriceIsStrongPP() {
-        loginAdmin();
-        initTestData();
+        //акционная цена жирная (акционная страница)
         Assert.assertTrue(productMP.specialPriceTextDecoration.contains("strong"));
-    }
 
-    //акционная цена красная (акционная страница)
-    @Test()
-    public void testSpecialrPriceIsRedPP() {
-        loginAdmin();
-        initTestData();
+        //акционная цена красная (акционная страница)
         Assert.assertTrue(productMP.specialPriceColor.getBlue() == 0 &&
                 productMP.specialPriceColor.getGreen() == 0);
-    }
 
-    //акционная цена крупнее, чем обычная (акционная страница)
-    @Test()
-    public void testSpecialPriceFontGreaterThanRegularPP() {
-        loginAdmin();
-        initTestData();
+        //акционная цена крупнее, чем обычная (акционная страница)
         Assert.assertTrue(productMP.specialPriceFontSize > productMP.regularPriceFontSize);
     }
 }
