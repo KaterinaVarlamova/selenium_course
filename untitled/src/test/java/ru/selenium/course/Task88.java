@@ -72,7 +72,7 @@ public class Task88 {
     }
 
     private void initTable() {
-        table = driver.findElement(By.tagName("tbody"));
+        table = driver.findElement(By.cssSelector("#content > form > table > tbody"));
         rows = table.findElements(By.tagName("tr"));
     }
 
