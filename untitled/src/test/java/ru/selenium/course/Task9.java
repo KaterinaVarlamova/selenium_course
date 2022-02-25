@@ -1,7 +1,6 @@
 package ru.selenium.course;
 
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +19,6 @@ import java.util.stream.Collectors;
 public class Task9 {
     private WebDriver driver;
     private WebDriverWait wait;
-    private WebElement table;
-    private List<WebElement> rows;
 
     @Before
     public void start() {
