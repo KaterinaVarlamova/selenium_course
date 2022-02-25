@@ -5,10 +5,6 @@ public class NewProduct {
     public String name;
     public String code;
     public String quantity;
-    public String weight;
-    public String width;
-    public String height;
-    public String length;
     public String picture;
     public String headTitle;
     public String price;
@@ -28,26 +24,6 @@ public class NewProduct {
 
     public NewProduct withQuantity(int quantity) {
         this.quantity = String.valueOf(quantity);
-        return this;
-    }
-
-    public NewProduct withWeight(double weight) {
-        this.weight = String.valueOf(weight);
-        return this;
-    }
-
-    public NewProduct withWidth(double width) {
-        this.width = String.valueOf(width);
-        return this;
-    }
-
-    public NewProduct withHeight(double height) {
-        this.height = String.valueOf(height);
-        return this;
-    }
-
-    public NewProduct withLength(double length) {
-        this.length = String.valueOf(length);
         return this;
     }
 

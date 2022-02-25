@@ -105,8 +105,7 @@ public class TestAddingNewProduct {
     void createNewProduct() {
         String pathToPicFile = new File("src/test/java/resources/image.png")
                 .getAbsolutePath();
-        newProduct.withName("New Product").withCode("RD00x").withHeadTitle("New Product").withHeight(10.00)
-                .withLength(10.00).withWidth(6.00).withWeight(200.00).withQuantity(25).withPrice(12.00)
+        newProduct.withName("New Product").withCode("RD00x").withHeadTitle("New Product").withQuantity(25).withPrice(12.00)
                 .withPicture(pathToPicFile);
 
     }
