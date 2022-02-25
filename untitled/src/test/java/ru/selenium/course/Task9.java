@@ -13,7 +13,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Task9 {
@@ -36,41 +38,32 @@ public class Task9 {
         driver.findElement(By.name("login")).click();
         driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
 
-        initTable();
 
-        int countryColNum = 2;
-        int zoneColNum = 2;
-        String countryName = "";
-        String currentZoneName = "";
-        String nextZoneName = "";
+
+        List<String> list;
+        int countryNumber = driver.findElements(By.cssSelector("td>a:not(a[title])")).size();
+
 
         //  заходит в каждую из стран и проверяет, что зоны расположены в алфавитном порядке.
-        for (int i = 1; i < rows.size()-1; i++) {
-
-            countryName = rows.get(i).findElements(By.tagName("td")).get(countryColNum).getText();
-            driver.findElement(By.linkText(countryName)).click();
+        for (int i = 0; i < countryNumber ; i++) {
+            driver.findElement(By.cssSelector(String.format(".row:nth-child(%d)>td>a:not(a[title])", i+2))).click();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("td")));
-            initTable();
-            for (int j = 1; j < rows.size() - 1; j++) {
 
-                currentZoneName = StringUtils.stripAccents(rows.get(j).findElements(By.tagName("td")).
-                        get(zoneColNum).getText());
-                nextZoneName = StringUtils.stripAccents(rows.get(j + 1).findElements(By.tagName("td")).
-                        get(zoneColNum).getText());
-                Assert.assertTrue(nextZoneName.compareTo(currentZoneName) > 0);
+            list = driver.findElements(By.cssSelector("[name$='[zone_code]']  [selected~=selected]"))
+                    .stream()
+                    .map(WebElement::getText)
+                    .collect(Collectors.toList());
+
+            for (int j = 0; j < list.size() - 1; j++) {
+                Assert.assertTrue(list.get(j).compareTo(list.get(j + 1)) < 0);
             }
+
             driver.navigate().back();
-            initTable();
 
         }
         driver.findElement(By.className("fa-sign-out")).click();
     }
 
-
-    private void initTable() {
-        table = driver.findElement(By.cssSelector("#content > form > table > tbody"));
-        rows = table.findElements(By.tagName("tr"));
-    }
 
     @After
     public void stop() {
