@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Task11 {
@@ -15,12 +17,13 @@ public class Task11 {
     private WebDriverWait wait;
 
     String email = System.currentTimeMillis() / 1000L + "@yandex.ru";
-    User newUser = new User("Kate", "Varlamova", "United States", email, "password","89374562526",
-            "123456","California");
+    User newUser = new User("Kate", "Varlamova", "United States", email, "password", "89374562526",
+            "12345", "California");
 
     public void logout() {
         driver.findElement(By.linkText("Logout")).click();
     }
+
     @Before
     public void start() {
         driver = new ChromeDriver();
@@ -32,6 +35,7 @@ public class Task11 {
         driver.quit();
         driver = null;
     }
+
 
     @Test
     public void task11() {
@@ -49,6 +53,9 @@ public class Task11 {
         loginRegistrationForm.findElement(By.cssSelector("[name='city']")).sendKeys(newUser.city);
         loginRegistrationForm.findElement(By.cssSelector("[name='phone']")).click(); //сначала жмем
         loginRegistrationForm.findElement(By.cssSelector("[name='phone']")).sendKeys(newUser.phone);
+
+        loginRegistrationForm.findElement(By.xpath("//span[@class = 'select2-selection__arrow']")).click();
+        loginRegistrationForm.findElement(By.xpath("(//li[contains(text(), 'United States')])[1]")).click();
 
         loginRegistrationForm.findElement(By.cssSelector("[name='create_account']")).click();
         // 2) выход (logout), потому что после успешной регистрации автоматически происходит вход,
